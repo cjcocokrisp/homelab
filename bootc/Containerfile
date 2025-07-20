@@ -1,0 +1,23 @@
+FROM quay.io/centos/centos:stream10
+
+# Add metadata to container
+LABEL org.bootc.image-version="1.0"
+LABEL org.bootc.os-type="centos"
+LABEL org.bootc.init-system="systemd"
+
+# Install packages
+RUN dnf install -y \
+      bootc \
+      systemd \
+      passwd \
+      shadow-utils \
+      git \
+      openssh-server \
+      sudo && \
+    dnf clean all
+
+RUN systemctl enable sshd
+
+# Enable graceful shutdown and start system
+STOPSIGNAL SIGRTMIN+3
+CMD [ "/sbin/init" ]
