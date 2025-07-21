@@ -5,19 +5,34 @@ LABEL org.bootc.image-version="1.0"
 LABEL org.bootc.os-type="centos"
 LABEL org.bootc.init-system="systemd"
 
-# Install packages
+# Set Build Args
+ARG USERNAME=hostadmin
+ARG HOSTNAME=node
+ARG PASSWORD
+ARG SSH_PUB_KEY
+
+# Set the hostname of system
+RUN echo ${HOSTNAME} > /etc/hostname
+
+# Set up user with sudo privileges
+RUN useradd -m -G wheel -S /bin/bash ${USERNAME} && \
+    echo '${USERNAME} ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/${USERNAME} && \
+    chmod 0440 /etc/sudoers.d/${USERNAME}
+
+# Set up SSH keys for user & start server
+RUN mkdir -p /home/${USERNAME}/.ssh && \
+    echo ${SSH_PUB_KEY} > /home/${USERNAME}/.ssh/authorized_keys && \
+    chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}/.ssh && \
+    chmod 700 /home/${USERNAME}/.ssh && \
+    chmod 600 /home/${USERNAME}/.ssh/authorized_keys
+
+# Install Packages
 RUN dnf install -y \
       bootc \
       systemd \
       passwd \
       shadow-utils \
-      git \
       openssh-server \
       sudo && \
     dnf clean all
 
-RUN systemctl enable sshd
-
-# Enable graceful shutdown and start system
-STOPSIGNAL SIGRTMIN+3
-CMD [ "/sbin/init" ]
