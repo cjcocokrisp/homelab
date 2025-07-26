@@ -7,7 +7,7 @@ on:
 
 env:
   IMAGE_REGISTRY: ghcr.io
-  IMAGE_NAME: homelab-centos-stream-bootc
+  IMAGE_NAME: homelab-fedora-bootc
   REGISTRY_USER: ${{ secrets.REGISTRY_USERNAME }}
   REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
 

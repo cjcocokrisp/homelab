@@ -1,8 +1,8 @@
-FROM quay.io/centos-bootc/centos-bootc:stream10
+FROM quay.io/fedora/fedora-bootc:42
 
 # Add metadata to container
 LABEL org.bootc.image-version="1.0"
-LABEL org.bootc.os-type="centos"
+LABEL org.bootc.os-type="fedora"
 LABEL org.bootc.init-system="systemd"
 
 # Install Packages
