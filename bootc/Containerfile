@@ -7,13 +7,8 @@ LABEL org.bootc.init-system="systemd"
 
 # Install Packages
 RUN dnf install -y \
-      bootc \
-      systemd \
-      passwd \
-      shadow-utils \
-      openssh-server \
-      sudo \
-      vim && \
+      vim \
+      fastfetch && \
     dnf clean all
 
 # Enable SSH
