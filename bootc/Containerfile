@@ -12,7 +12,8 @@ RUN dnf install -y \
       passwd \
       shadow-utils \
       openssh-server \
-      sudo && \
+      sudo \
+      vim && \
     dnf clean all
 
 # Enable SSH
