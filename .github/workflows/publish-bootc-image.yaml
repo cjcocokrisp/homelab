@@ -1,0 +1,34 @@
+on:
+  push:
+    paths: 
+      - "bootc/Containerfile"
+    branchs: 
+      - main
+
+env:
+  IMAGE_REGISTRY: ghcr.io
+  IMAGE_NAME: homelab-centos-stream-bootc
+  REGISTRY_USER: ${{ secrets.REGISTRY_USERNAME }}
+  REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+
+jobs:
+  build-bootc-image:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Podman
+        run: sudo apt-get update && sudo apt-get install -y podman
+
+      - name: Sign Into GHCR
+        uses: redhat-actions/podman-login@v1
+        with:
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          registry: ${{ env.IMAGE_REGISTRY }}
+
+      - name: Build and Push Bootc Image
+        run: |
+          podman build -t ${IMAGE_REGISTRY}/${REGISTRY_USER}/${IMAGE_NAME}:latest bootc/
+          podman push ${IMAGE_REGISTRY}/${REGISTRY_USER}/${IMAGE_NAME}:latest
