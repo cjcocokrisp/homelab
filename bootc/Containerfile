@@ -13,3 +13,6 @@ RUN dnf install -y \
 
 # Enable SSH
 RUN systemctl enable sshd
+
+# Enable auto bootc updates
+RUN systemctl enable bootc-fetch-apply-updates.timer
