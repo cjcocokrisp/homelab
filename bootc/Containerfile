@@ -7,8 +7,14 @@ LABEL org.bootc.init-system="systemd"
 
 # Install Packages
 RUN dnf install -y \
+      dnf-plugins-core \
+      'dnf5-command(config-manager)' \  
       vim \
-      fastfetch && \
+      git \
+      fastfetch \ 
+      @virtualization && \
+    sudo dnf config-manager addrepo --from-repofile=https://rpm.releases.hashicorp.com/fedora/hashicorp.repo && \
+    sudo dnf install -y terraform && \
     dnf clean all
 
 # Enable SSH
@@ -16,3 +22,9 @@ RUN systemctl enable sshd
 
 # Enable auto bootc updates
 RUN systemctl enable bootc-fetch-apply-updates.timer
+
+# Enable libvirt
+RUN systemctl enable libvirtd
+
+# Clone homelab repo
+RUN cd /usr/share && sudo git clone https://github.com/cjcocokrisp/homelab.git
