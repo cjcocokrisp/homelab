@@ -1,0 +1,9 @@
+interfaces:
+  - name: br0
+    type: linux-bridge
+    ipv4:
+      enabled: true
+      dhcp: true
+    bridge:
+      port:
+        - name: eth0
