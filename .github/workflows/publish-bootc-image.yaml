@@ -2,7 +2,7 @@ on:
   push:
     paths: 
       - "bootc/Containerfile"
-      - "nmstate/vm-bridge.yaml"
+      - "nmstate/**"
       - "terraform/**"
     branchs: 
       - main
