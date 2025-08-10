@@ -13,6 +13,7 @@ RUN dnf install -y \
       git \
       fastfetch \
       nmstate \
+      wget \
       @virtualization && \
     sudo dnf config-manager addrepo --from-repofile=https://rpm.releases.hashicorp.com/fedora/hashicorp.repo && \
     sudo dnf install -y terraform && \
