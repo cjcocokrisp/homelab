@@ -24,6 +24,10 @@ RUN dnf install -y \
 # Enable SSH
 RUN systemctl enable sshd
 
+# TODO:: Make this just disable one directory
+# Disable SELinux for now to not have error with libvirt logs 
+run sed -i 's/^SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+
 # Enable auto bootc updates
 RUN systemctl enable bootc-fetch-apply-updates.timer
 
