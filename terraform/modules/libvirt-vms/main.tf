@@ -24,27 +24,31 @@ resource "libvirt_pool" "talos_storage_pool" {
 resource "libvirt_volume" "base_talos_volume" {
   name   = "base_talos_volume"
   source = var.talos_image_path
+  pool   = libvirt_pool.talos_storage_pool.name
 }
 
 resource "libvirt_volume" "controller" {
   count          = var.controller_count
   name           = "${var.prefix}_c${count.index}.img"
+  pool           = libvirt_pool.talos_storage_pool.name
   base_volume_id = libvirt_volume.base_talos_volume.id
   format         = "qcow2"
   size           = 40 * 1024 * 1024 * 1024 # 40 GB 
 }
 
 resource "libvirt_volume" "worker" {
-  count            = var.worker_count
-  name             = "${var.prefix}_w${count.index}.img"
-  base_volume_name = libvirt_volume.base_talos_volume.id
-  format           = "qcow2"
-  size             = 40 * 1024 * 1024 * 1024 # 40 GB
+  count          = var.worker_count
+  name           = "${var.prefix}_w${count.index}.img"
+  pool           = libvirt_pool.talos_storage_pool.name
+  base_volume_id = libvirt_volume.base_talos_volume.id
+  format         = "qcow2"
+  size           = 40 * 1024 * 1024 * 1024 # 40 GB
 }
 
 resource "libvirt_volume" "worker_data0" {
   count  = var.worker_count
   name   = "${var.prefix}_wd${count.index}.img"
+  pool   = libvirt_pool.talos_storage_pool.name
   format = "qcow2"
   size   = var.worker_data0_size * 1024 * 1024 * 1024 # User set size in GB
 }
@@ -52,7 +56,7 @@ resource "libvirt_volume" "worker_data0" {
 resource "libvirt_domain" "controller" {
   count      = var.controller_count
   name       = "${var.prefix}_cVM${count.index}"
-  qemu_agent = false
+  qemu_agent = true
   machine    = "q35"
   firmware   = "/usr/share/OVMF/OVMF_CODE.fd"
   cpu {
@@ -71,6 +75,11 @@ resource "libvirt_domain" "controller" {
     bridge   = var.host_bridge_interface
     hostname = "${var.prefix}-cVM${count.index}"
   }
+  console {
+    type        = "pty"
+    target_type = "serial"
+    target_port = 0
+  }
   lifecycle {
     ignore_changes = [
       nvram,
@@ -82,9 +91,9 @@ resource "libvirt_domain" "controller" {
 resource "libvirt_domain" "worker" {
   count      = var.worker_count
   name       = "${var.prefix}_wVM${count.index}"
-  qemu_agent = false
+  qemu_agent = true
   machine    = "q35"
-  firmware   = "usr/share/OVMF/OVMF_CODE.fd"
+  firmware   = "/usr/share/OVMF/OVMF_CODE.fd"
   cpu {
     mode = "host-passthrough"
   }
@@ -100,6 +109,11 @@ resource "libvirt_domain" "worker" {
   network_interface {
     bridge   = var.host_bridge_interface
     hostname = "${var.prefix}-wVM${count.index}"
+  }
+  console {
+    type        = "pty"
+    target_type = "serial"
+    target_port = 0
   }
   lifecycle {
     ignore_changes = [

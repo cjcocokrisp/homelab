@@ -55,9 +55,9 @@ variable "worker_data0_size" {
 variable "talos_image_path" {
   description = "path to local talos image"
   type        = string
-  default     = "/var/lib/libvirt/iamges/talos.qcow2"
+  default     = "/var/lib/libvirt/images/talos.qcow2"
   validation {
-    condition     = can(regex(".\\.qcow2+$", var.talos_libvirt_base_volume_name))
+    condition     = can(regex(".\\.qcow2+$", var.talos_image_path))
     error_message = "Must be a name with the .qcow2 extension"
   }
 }
