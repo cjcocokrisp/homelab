@@ -9,6 +9,10 @@ terraform {
   }
 }
 
+provider "libvirt" {
+  uri = "qemu:///system"
+}
+
 resource "libvirt_volume" "controller" {
   count            = var.controller_count
   name             = "${var.prefix}_c${count.index}.img"
@@ -38,7 +42,7 @@ resource "libvirt_domain" "controller" {
   qemu_agent = false
   machine    = "q35"
   firmware   = "/usr/share/OVMF/OVMF_CODE.fd"
-  cpu = {
+  cpu {
     mode = "host-passthrough"
   }
   vcpu   = var.controller_vcpu
@@ -46,7 +50,7 @@ resource "libvirt_domain" "controller" {
   video {
     type = "qxl"
   }
-  disk = {
+  disk {
     volume_id = libvirt_volume.controller[count.index].id
     scsi      = true
   }
@@ -68,7 +72,7 @@ resource "libvirt_domain" "worker" {
   qemu_agent = false
   machine    = "q35"
   firmware   = "usr/share/OVMF/OVMF_CODE.fd"
-  cpu = {
+  cpu {
     mode = "host-passthrough"
   }
   vcpu   = var.worker_vcpu
@@ -76,7 +80,7 @@ resource "libvirt_domain" "worker" {
   video {
     type = "qxl"
   }
-  disk = {
+  disk {
     volume_id = libvirt_volume.worker[count.index].id
     scsi      = true
   }
