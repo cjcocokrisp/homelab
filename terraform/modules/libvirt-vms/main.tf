@@ -13,25 +13,38 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
+resource "libvirt_pool" "talos_storage_pool" {
+  name = "talos_storage_pool"
+  type = "dir"
+  target {
+    path = "/var/lib/libvirt/images/talos_storage"
+  }
+}
+
+resource "libvirt_volume" "base_talos_volume" {
+  name   = "base_talos_volume"
+  source = var.talos_image_path
+}
+
 resource "libvirt_volume" "controller" {
-  count            = var.controller_count
-  name             = "${var.prefix}_c${count.index}.img"
-  base_volume_name = var.talos_libvirt_base_volume_name
-  format           = "qcow2"
-  size             = 40 * 1024 * 1024 * 1024 # 40 GB 
+  count          = var.controller_count
+  name           = "${var.prefix}_c${count.index}.img"
+  base_volume_id = libvirt_volume.base_talos_volume.id
+  format         = "qcow2"
+  size           = 40 * 1024 * 1024 * 1024 # 40 GB 
 }
 
 resource "libvirt_volume" "worker" {
   count            = var.worker_count
   name             = "${var.prefix}_w${count.index}.img"
-  base_volume_name = var.talos_libvirt_base_volume_name
+  base_volume_name = libvirt_volume.base_talos_volume.id
   format           = "qcow2"
   size             = 40 * 1024 * 1024 * 1024 # 40 GB
 }
 
 resource "libvirt_volume" "worker_data0" {
   count  = var.worker_count
-  name   = "${var.prefix}_c${count.index}.img"
+  name   = "${var.prefix}_wd${count.index}.img"
   format = "qcow2"
   size   = var.worker_data0_size * 1024 * 1024 * 1024 # User set size in GB
 }
