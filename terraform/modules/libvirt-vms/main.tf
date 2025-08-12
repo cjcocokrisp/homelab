@@ -59,6 +59,7 @@ resource "libvirt_domain" "controller" {
   qemu_agent = true
   machine    = "q35"
   firmware   = "/usr/share/OVMF/OVMF_CODE.fd"
+  autostart  = true
   cpu {
     mode = "host-passthrough"
   }
@@ -94,6 +95,7 @@ resource "libvirt_domain" "worker" {
   qemu_agent = true
   machine    = "q35"
   firmware   = "/usr/share/OVMF/OVMF_CODE.fd"
+  autostart  = true
   cpu {
     mode = "host-passthrough"
   }
@@ -105,6 +107,11 @@ resource "libvirt_domain" "worker" {
   disk {
     volume_id = libvirt_volume.worker[count.index].id
     scsi      = true
+  }
+  disk {
+    volume_id = libvirt_volume.worker_data0[count.index].id
+    scsi      = true
+    wwn       = format("000000000000ab%02x", count.index)
   }
   network_interface {
     bridge   = var.host_bridge_interface
