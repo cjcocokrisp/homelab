@@ -131,3 +131,38 @@ resource "libvirt_domain" "worker" {
     ]
   }
 }
+
+resource "null_resource" "wait_for_vms_to_boot" {
+  count = var.worker_count + var.controller_count
+  provisioner "local-exec" {
+    command = "sleep 2m"
+  }
+  depends_on = [
+    libvirt_domain.controller,
+    libvirt_domain.worker
+  ]
+}
+
+data "external" "get_ipv4_controller" {
+  count = var.controller_count
+  program = [
+    "bash", "-c", <<EOT
+      mac=$(virsh dumpxml ${libvirt_domain.controller[count.index].name} | grep "mac address" | awk -F\' '{ print $2}')
+      ip=$(virsh domifaddr ${libvirt_domain.controller[count.index].name} --source agent | grep -E $mac | awk '$3=="ipv4"{print $4}' | cut -d'/' -f1)
+      echo "{\"ip\":\"$ip\"}"
+    EOT
+  ]
+  depends_on = [null_resource.wait_for_vms_to_boot]
+}
+
+data "external" "get_ipv4_worker" {
+  count = var.worker_count
+  program = [
+    "bash", "-c", <<EOT
+      mac=$(virsh dumpxml ${libvirt_domain.worker[count.index].name} | grep "mac address" | awk -F\' '{ print $2}')
+      ip=$(virsh domifaddr ${libvirt_domain.worker[count.index].name} --source agent | grep -E $mac | awk '$3=="ipv4"{print $4}' | cut -d'/' -f1)
+      echo "{\"ip\":\"$ip\"}"
+    EOT
+  ]
+  depends_on = [null_resource.wait_for_vms_to_boot]
+}
