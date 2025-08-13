@@ -73,8 +73,9 @@ resource "libvirt_domain" "controller" {
     scsi      = true
   }
   network_interface {
-    bridge   = var.host_bridge_interface
-    hostname = "${var.prefix}-cVM${count.index}"
+    bridge         = var.host_bridge_interface
+    hostname       = "${var.prefix}-cVM${count.index}"
+    wait_for_lease = true
   }
   console {
     type        = "pty"
@@ -114,8 +115,9 @@ resource "libvirt_domain" "worker" {
     wwn       = format("000000000000ab%02x", count.index)
   }
   network_interface {
-    bridge   = var.host_bridge_interface
-    hostname = "${var.prefix}-wVM${count.index}"
+    bridge         = var.host_bridge_interface
+    hostname       = "${var.prefix}-wVM${count.index}"
+    wait_for_lease = true
   }
   console {
     type        = "pty"
