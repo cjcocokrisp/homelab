@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps
+spec: 
+  desintation:
+    name: in-cluster
+    namespace: argocd
+  source:
+    path: argocd/apps
+    repoURL: https://github.com/cjcocokrisp/homelab
+    targetRevision: HEAD
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
