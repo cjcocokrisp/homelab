@@ -7,3 +7,4 @@ The credits for the repos based on directory are below.
 **Credits:**
 
 - `flame` - https://github.com/pawelmalak/flame
+- `metrics-server` - https://github.com/kubernetes-sigs/metrics-server
