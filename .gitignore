@@ -1,5 +1,6 @@
 venv/
 .venv/
 oasloapc.json
+hplaptop.json
 kubeconfig
 talosconfig

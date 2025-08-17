@@ -26,20 +26,12 @@ variable "controller_count" {
   description = "amount of control nodes"
   type        = number
   default     = 1
-  validation {
-    condition     = var.controller_count >= 1
-    error_message = "you must have more then one control node"
-  }
 }
 
 variable "worker_count" {
   description = "amount of worker nodes"
   type        = number
   default     = 1
-  validation {
-    condition     = var.worker_count >= 1
-    error_message = "you must have more then one worker node"
-  }
 }
 
 variable "worker_data0_size" {
