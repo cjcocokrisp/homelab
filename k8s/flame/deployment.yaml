@@ -24,3 +24,10 @@ spec:
             httpGet:
               path: /
               port: 5005
+          volumeMounts:
+            - mountPath: /app/data
+              name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: flame-pvc
