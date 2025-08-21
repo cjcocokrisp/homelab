@@ -4,3 +4,5 @@ oasloapc.json
 hplaptop.json
 kubeconfig
 talosconfig
+*.bu
+*.ign
