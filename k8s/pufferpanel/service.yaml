@@ -1,0 +1,19 @@
+# https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: pufferpanel-svc
+  namespace: pufferpanel
+spec:
+  selector:
+    app: pufferpanel
+  type: NodePort
+  ports:
+    - name: webui
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: minecraft
+      protocol: TCP
+      port: 25565
+      targetPort: 25565

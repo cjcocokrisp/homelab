@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pufferpanel-ingress
+  namespace: pufferpanel
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: pufferpanel.cjcocokrisp.lan
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: pufferpanel-svc
+            port:
+              number: 8080
+  - host: play.mc.cjcocokrisp.lan
+    http:
+      paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pufferpanel-svc
+                port:
+                  number: 25565
