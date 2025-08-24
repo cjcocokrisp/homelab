@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft-server
+  labels:
+    app: minecraft-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft-server
+  template:
+    metadata:
+      labels:
+        app: minecraft-server
+    spec:
+      containers:
+      - name: minecraft-server
+        image: itzg/minecraft-server:latest
+        resources:
+          limits:
+            memory: 6Gi
+          requests:
+            memory: 2Gi
+        envFrom:
+        - configMapRef:
+            name: minecraft-server-cm
+        ports:
+        - containerPort: 25565
+          name: minecraft
+        volumeMounts:
+          - name: minecraft-data
+            mountPath:  /data
+      volumes:
+      - name: minecraft-data
+        nfs:
+          server: 192.168.0.4
+          path: /mnt/nfs/main
+

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minecraft-server-cm
+data:
+  EULA: "TRUE"
+  TYPE: "VANILLA"
+  MODE: "survival"
+  DIFFICULTY: "hard"
+  MOTD: "Powered by K8S!"
+  MAX_PLAYERS: "10"
+  ALLOW_FLIGHT: "TRUE"
+  OVERRIDE_ICON: "TRUE"
