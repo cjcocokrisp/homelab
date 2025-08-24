@@ -21,7 +21,7 @@ spec:
           limits:
             memory: 6Gi
           requests:
-            memory: 2Gi
+            memory: 4Gi
         envFrom:
         - configMapRef:
             name: minecraft-server-cm
