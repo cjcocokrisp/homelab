@@ -4,10 +4,10 @@ metadata:
   name: minecraft-server-cm
 data:
   EULA: "TRUE"
-  TYPE: "VANILLA"
+  TYPE: "PAPER"
   MODE: "survival"
   DIFFICULTY: "hard"
-  MOTD: "Powered by K8S!"
+  MOTD: "Powered by k8s!"
   MAX_PLAYERS: "10"
   ALLOW_FLIGHT: "TRUE"
   OVERRIDE_ICON: "TRUE"
