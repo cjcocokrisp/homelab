@@ -28,6 +28,8 @@ spec:
         ports:
         - containerPort: 25565
           name: minecraft
+        - containerPort: 8080
+          name: dynmap
         volumeMounts:
           - name: minecraft-data
             mountPath:  /data

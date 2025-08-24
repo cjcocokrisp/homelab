@@ -9,5 +9,8 @@ spec:
   ports:
     - port: 25565
       nodePort: 30001
+      name: minecraft
+    - port: 8080
+      name: dynmap
   selector:
     app: minecraft-server
