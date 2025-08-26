@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: romm
+  labels:
+    app: romm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: romm
+  template:
+    metadata:
+      labels:
+        app: romm
+    spec:
+      nodeSelector:
+        machine: bastion
+      restartPolicy: Always
+      containers:
+      - name: romm
+        image: rommapp/romm:latest
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        env:
+          - name: ROMM_AUTH_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: romm-secret
+                key: rommauthkey
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: romm-db-secret
+                key: user
+          - name: DB_PASSWD
+            valueFrom:
+              secretKeyRef:
+                name: romm-db-secret
+                key: userpassword
+          - name : IGDB_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: romm-secret
+                key: igdbclientid
+          - name: IGDB_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: romm-secret
+                key: igdbsecretid
+          - name: RETROACHIEVEMENTS_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: romm-secret
+                key: retroachievementskey
+        volumeMounts:
+          - name: romm-resources
+            mountPath:  /romm/resources
+          - name: romm-logs
+            mountPath: /romm/logs
+          - name: romm-assets
+            mountPath:  /romm/assets
+          - name: romm-library
+            mountPath:  /romm/library
+          - name: romm-config
+            mountPath:  /romm/config
+      - name: romm-db
+        image: mariadb:latest
+        env:
+          - name: MARIADB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: romm-db-secret
+                key: rootpassword
+          - name: MARIADB_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: romm-db-secret
+                key: dbname
+          - name: MARIADB_USER
+            valueFrom:
+              secretKeyRef:
+                name: romm-db-secret
+                key: user
+          - name: MARIADB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: romm-db-secret
+                key: userpassword
+        securityContext:
+          runAsUser: 999
+          runAsGroup: 999
+        volumeMounts:
+          - name: romm-db
+            mountPath:  /var/lib/mysql
+      volumes:
+      - name: romm-resources
+        nfs:
+          server: 192.168.0.4
+          path: /mnt/nfs/romm/resources
+      - name: romm-logs
+        nfs:
+          server: 192.168.0.4
+          path: /mnt/nfs/romm/logs
+      - name: romm-assets
+        nfs:
+          server: 192.168.0.4
+          path: /mnt/nfs/romm/assets
+      - name: romm-library
+        nfs:
+          server: 192.168.0.4
+          path: /mnt/nfs/romm/library
+      - name: romm-config
+        nfs:
+          server: 192.168.0.4
+          path: /mnt/nfs/romm/config
+      - name: romm-db
+        nfs:
+          server: 192.168.0.4
+          path: /mnt/nfs/romm-db

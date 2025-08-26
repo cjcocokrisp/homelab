@@ -1,8 +1,10 @@
 venv/
 .venv/
+k8s-secrets/
 oasloapc.json
 hplaptop.json
 kubeconfig
 talosconfig
 *.bu
 *.ign
+romm-secrets.yaml
