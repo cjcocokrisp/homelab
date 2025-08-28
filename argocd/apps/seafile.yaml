@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: seafile
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    name: seafile
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: seafile
+  source:
+    repoURL: https://github.com/cjcocokrisp/homelab
+    targetRevision: HEAD
+    path: k8s/seafile
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

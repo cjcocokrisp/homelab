@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seafile
+  namespace: seafile
+spec:
+  selector:
+    matchLabels:
+      app: seafile
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: seafile
+    spec:
+      nodeSelector:
+        machine: beacon
+      containers:
+        - name: seafile
+          image: seafileltd/seafile-mc:11.0-latest
+          env:
+            - name: DB_ROOT_PASSWD
+              valueFrom:
+                secretKeyRef:
+                  name: seafile-secret
+                  key: dbrootpassword
+            - name: TIME_ZONE
+              value: "Etc/UTC"
+            - name: SEAFILE_ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: seafile-secret
+                  key: adminemail
+            - name: SEAFILE_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: seafile-secret
+                  key: adminpassword
+            - name: SEAFILE_SERVER_LETSENCRYPT
+              value: "false"
+            - name: SEAFILE_SERVER_HOSTNAME
+              value: "127.0.0.1"
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: seafile-data
+              mountPath: /shared
+        - name: mariadb
+          image: mariadb:10.11
+          env:
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: seafile-secret
+                  key: dbrootpassword
+            - name: MARIADB_AUTO_UPGRADE
+              value: "true"
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mariadb-data
+              mountPath: /var/lib/mysql
+        - name: memcached
+          image: memcached:1.6.18
+          args: ["-m", "256"]
+          ports:
+            - containerPort: 11211
+      volumes:
+        - name: seafile-data
+          persistentVolumeClaim:
+            claimName: seafile-data
+        - name: mariadb-data
+          persistentVolumeClaim:
+            claimName: mariadb-data
