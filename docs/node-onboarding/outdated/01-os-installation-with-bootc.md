@@ -79,9 +79,7 @@ Below are some improvements I want to make to this page and process in general.
 
 #### Actual Process 
 
-[ ] - Actual hostname configuration through bootc
-
-[ ] - More rebust config generator script that can read .ssh directory and generate keys
+[ ] - More rebust ignition generator script that can read .ssh directory and generate keys
 
 #### Docs Page
 
