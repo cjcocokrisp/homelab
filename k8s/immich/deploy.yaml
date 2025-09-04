@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: immich
+  namespace: immich
+spec:
+  selector:
+    matchLabels:
+      app: immich
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: immich
+    spec:
+      nodeSelector:
+        machine: beacon
+      containers:
+        - name: immich
+          image: ghcr.io/immich-app/immich-server:release
+          imagePullPolicy: Always
+          securityContext:
+            runAsUser: 0
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: immich-secret
+                  key: postgres.password
+            - name: DB_HOSTNAME
+              value: "127.0.0.1"
+            - name: REDIS_HOSTNAME
+              value: "127.0.0.1"
+          ports: 
+            - containerPort: 2283
+          volumeMounts:
+            - name: immich-library-data
+              mountPath: /usr/src/app/upload
+        - name: postgres
+          image: pgvector/pgvector:pg16
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: immich-secret
+                  key: postgres.db
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: immich-secret
+                  key: postgres.user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: immich-secret
+                  key: postgres.password
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: immich-db-data
+              mountPath: /var/lib/postgresql
+        - name: redis
+          image: redis
+          ports:
+            - containerPort: 6379
+      volumes:
+        - name: immich-library-data
+          persistentVolumeClaim:
+            claimName: immich-library-data
+        - name: immich-db-data
+          persistentVolumeClaim:
+            claimName: immich-db-data
