@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: convertx
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    name: convertx
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: convertx
+  source:
+    repoURL: https://github.com/cjcocokrisp/homelab
+    targetRevision: HEAD
+    path: k8s/convertx
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
