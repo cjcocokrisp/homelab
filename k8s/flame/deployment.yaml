@@ -11,6 +11,8 @@ spec:
       labels:
         app: flame
     spec:
+      nodeSelector:
+        machine: bastion
       securityContext:
         fsGroup: 1000
       containers:
