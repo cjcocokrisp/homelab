@@ -5,6 +5,7 @@ metadata:
 data:
   EULA: "TRUE"
   TYPE: "PAPER"
+  VERSION: 1.21.8
   MODE: "survival"
   DIFFICULTY: "hard"
   MOTD: "Powered by k8s!"
