@@ -26,7 +26,7 @@ spec:
             memory: 4Gi
         envFrom:
         - configMapRef:
-            name: minecraft-server-cm
+            name: shawarmacraft-cm
         ports:
         - containerPort: 25565
           name: minecraft
@@ -39,5 +39,5 @@ spec:
       - name: minecraft-data
         nfs:
           server: 192.168.0.4
-          path: /mnt/nfs/main
+          path: /mnt/nfs/shawarmacraft
 
