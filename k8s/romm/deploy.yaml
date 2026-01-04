@@ -43,6 +43,8 @@ spec:
               secretKeyRef:
                 name: romm-db-secret
                 key: userpassword
+          - name: DB_HOST
+            value: "127.0.0.1"
           - name : IGDB_CLIENT_ID
             valueFrom:
               secretKeyRef:
