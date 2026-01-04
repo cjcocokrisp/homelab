@@ -6,7 +6,7 @@ data:
   EULA: "TRUE"
   SERVER_NAME: "Shawarmacraft"
   TYPE: "PAPER"
-  VERSION: "1.21.7"
+  VERSION: "1.21.11"
   MAX_PLAYERS: "10"
   MODE: "survival"
   DIFFICULTY: "hard"
