@@ -12,5 +12,8 @@ spec:
       name: minecraft
     - port: 8080
       name: dynmap
+    - port: 25575
+      nodePort: 30002
+      name: rcon
   selector:
     app: minecraft-server
