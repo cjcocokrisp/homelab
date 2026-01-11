@@ -10,7 +10,7 @@ data:
   MAX_PLAYERS: "10"
   MODE: "survival"
   DIFFICULTY: "hard"
-  MOTD: "shawarma, oh shawarma, oh shawrma, life's better with you"
+  MOTD: "shawarma, oh shawarma, oh shawarma, life's better with you"
   ALLOW_FLIGHT: "TRUE"
   OVERRIDE_ICON: "TRUE"
   SNOOPER_ENABLED: "FALSE"
