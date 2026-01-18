@@ -16,6 +16,8 @@ RUN dnf install -y \
       wget \
       qemu \
       openssh-askpass \
+      tailscale \
+      kitty-terminfo \
       virt-manager \
       @virtualization && \
     sudo dnf config-manager addrepo --from-repofile=https://rpm.releases.hashicorp.com/fedora/hashicorp.repo && \
