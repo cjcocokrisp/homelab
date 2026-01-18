@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memos
+  namespace: memos
+spec:
+  selector:
+    matchLabels:
+      app: memos
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: memos
+    spec:
+      nodeSelector:
+        machine: bastion
+      containers:
+        - name: memos
+          image: docker.io/neosmemo/memos:stable
+          ports:
+            - containerPort: 5230
+              protocol: TCP
+          volumeMounts:
+            - name: memos-data
+              mountPath: /var/opt/memos
+      volumes:
+        - name: memos-data
+          persistentVolumeClaim:
+            claimName: memos-data
