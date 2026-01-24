@@ -34,6 +34,11 @@ run sed -i 's/^SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 # Enable auto bootc updates
 RUN systemctl enable bootc-fetch-apply-updates.timer
 
+# Enable settings for laptop to not turn off when you close it
+RUN sed -i 's/#HandleLidSwitch=suspend/HandleLidSwitch=ignore/' /usr/lib/systemd/logind.conf && \
+    sed -i 's/#HandleLidSwitchExternalPower=suspend/HandeLidSwitchExternalPower=ignore/' /usr/lib/systemd/logind.conf && \
+    sed -i 's/#HandleLidSwitchDocked=ignore/HandleLidSwitchDocked=ignore/' /usr/lib/systemd/logind.conf
+
 # Enable libvirt
 RUN systemctl enable libvirtd
 
