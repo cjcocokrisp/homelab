@@ -20,9 +20,8 @@ spec:
       values: |
         service:
           type: NodePort
-        deployment:
-          nodeSelector:
-            machine: bastion
+        nodeSelector:
+          machine: bastion
   syncPolicy:
     automated:
       prune: true
