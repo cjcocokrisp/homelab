@@ -27,6 +27,8 @@ spec:
         envFrom:
         - configMapRef:
             name: shawarmacraft-cm
+        - secretRef:
+            name: shawarmacraft-secret
         ports:
         - containerPort: 25565
           name: minecraft
