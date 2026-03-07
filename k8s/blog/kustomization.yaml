@@ -2,3 +2,7 @@ resources:
   - deploy.yaml
   - svc.yaml
   - ingress.yaml
+images:
+  - name: ghcr.io/cjcocokrisp/blog
+    newTag: latest
+    digest: sha256:9d2383ba655d451fee93133acd98e0b6972a1e6b050f66591d912e41414607da
