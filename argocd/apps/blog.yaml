@@ -7,6 +7,8 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
   labels:
     name: blog
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-succeeded.discord_webhook: ""
 spec:
   project: default
   destination:
