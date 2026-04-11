@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitea
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    name: gitea
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gitea
+  source:
+    chart: gitea
+    repoURL: https://dl.gitea.com/charts/
+    targetRevision: "12.5.0"
+    helm: 
+      values: |
+        persistence:
+          storageClass: local-path
+        valkey-cluster:
+          enabled: false
+        postgresql:
+          enabled: true
+          primary:
+            persistence:
+              storageClass: local-path
+        postgresql-ha:
+          enabled: false
+        service:
+          http:
+            type: NodePort
+        ingress:
+          enabled: true
+          className: nginx
+          hosts:
+            - host: git.cjcocokrisp.lan
+              paths:
+                - path: /
+                  pathType: Prefix
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
