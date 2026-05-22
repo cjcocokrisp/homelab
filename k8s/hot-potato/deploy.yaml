@@ -1,0 +1,37 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: hot-potato-deployment
+spec:
+  selector:
+    matchLabels:
+      app: hot-potato
+  template:
+    metadata:
+      labels:
+        app: hot-potato
+    spec:
+      containers:
+        - name: hot-potato
+          image: ghcr.io/omartheone104/hot-potato-app:latest
+          env:
+            - name: TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: hot-potato-secret
+                  key: token
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: hot-potato-secret
+                  key: clientid
+
+          volumeMounts:
+              - name: hot-potato-db
+                mountPath: /app/data
+
+      volumes:
+      - name: hot-potato-db
+        nfs:
+          server: 192.168.0.4
+          path: /mnt/nfs/hot-potato-db
