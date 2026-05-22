@@ -1,2 +1,6 @@
 resources:
   - deploy.yaml
+images:
+  - name: ghcr.io/omartheone104/hot-potato-app
+    newTag: latest
+    digest: sha256:1cda713df594336a11643a72c49cab426ccc1cd28d0b710f581ca43884b16498
