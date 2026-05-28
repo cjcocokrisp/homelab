@@ -27,11 +27,13 @@ spec:
                   key: clientid
 
           volumeMounts:
-              - name: hot-potato-db
-                mountPath: /app/data
+            - name: hot-potato-db
+              mountPath: /app/data
+      restartPolicy: Never
 
       volumes:
-      - name: hot-potato-db
-        nfs:
-          server: 192.168.0.4
-          path: /mnt/nfs/hot-potato-db
+        - name: hot-potato-db
+          nfs:
+            server: 192.168.0.4
+            path: /mnt/nfs/hot-potato-db
+
