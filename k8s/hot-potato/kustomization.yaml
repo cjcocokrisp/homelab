@@ -3,4 +3,4 @@ resources:
 images:
   - name: ghcr.io/omartheone104/hot-potato-app
     newTag: latest
-    digest: sha256:7a98b971bd9030193c3a2e59a688f6a6623a6256a021c1bce73c60244587a2da
+    digest: sha256:36e36ef92baade44b8e9096e42e199b60cf2cbcef96ef65adbdcb7defc64235e
