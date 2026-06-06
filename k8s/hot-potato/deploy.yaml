@@ -29,6 +29,12 @@ spec:
           volumeMounts:
             - name: hot-potato-db
               mountPath: /app/data
+            - name: hot-potato-config
+              mountPath: /app/src/index.js
+              subPath: index.js
+            - name: hot-potato-config
+              mountPath: /app/src/events/ready/consoleLog.js
+              subPath: consoleLog.js
       restartPolicy: Never
 
       volumes:
@@ -36,4 +42,7 @@ spec:
           nfs:
             server: 192.168.0.4
             path: /mnt/nfs/hot-potato-db
-
+        - name: hot-potato-db
+          nfs:
+            server: 192.168.0.4
+            path: /mnt/nfs/hot-potato-config
