@@ -40,6 +40,8 @@ spec:
               paths:
                 - path: /
                   pathType: Prefix
+          annotations:
+            nginx.ingress.kubernetes.io/proxy-body-size: "1g"
   syncPolicy:
     automated:
       prune: true
