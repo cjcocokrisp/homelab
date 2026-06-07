@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shinysim
+  namespace: shinysim
+spec:
+  selector:
+    matchLabels:
+      app: shinysim
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: shinysim
+    spec:
+      containers:
+        - image: ghcr.io/cjcocokrisp/shiny-sim:bundled
+          name: shinysim
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/data
+              name: shinysim-data
+            - name: shinysim-webpack-override
+              mountPath: /app/webpack.config.js
+              subPath: webpack.config.js
+          env:
+            - name: DANGEROUSLY_DISABLE_HOST_CHECK
+              value: "true"
+      restartPolicy: Always
+      volumes:
+        - name: shinysim-data
+          persistentVolumeClaim:
+            claimName: shinysim-data
+        - name: shinysim-webpack-override
+          nfs:
+            server: 192.168.0.4
+            path: /mnt/nfs/shinysim-override
