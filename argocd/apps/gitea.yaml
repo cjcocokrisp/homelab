@@ -12,36 +12,50 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: gitea
-  source:
-    chart: gitea
-    repoURL: https://dl.gitea.com/charts/
-    targetRevision: "12.5.0"
-    helm: 
-      values: |
-        persistence:
-          storageClass: local-path
-        valkey-cluster:
-          enabled: false
-        postgresql:
+  sources:
+    - repoURL: https://dl.gitea.com/charts/
+      chart: gitea
+      targetRevision: "12.5.0"
+      helm: 
+        values: |
+          persistence:
+            storageClass: local-path
+          valkey-cluster:
+            enabled: false
+          postgresql:
+            enabled: true
+            primary:
+              persistence:
+                storageClass: local-path
+          postgresql-ha:
+            enabled: false
+          service:
+            http:
+              type: NodePort
+          ingress:
+            enabled: true
+            className: nginx
+            hosts:
+              - host: git.cjcocokrisp.lan
+                paths:
+                  - path: /
+                    pathType: Prefix
+            annotations:
+              nginx.ingress.kubernetes.io/proxy-body-size: "1g"
+    - repoURL: https://dl.gitea.com/charts/
+      chart: actions
+      targetRevision: "0.1.2"
+      helm:
+        values: |
           enabled: true
-          primary:
-            persistence:
-              storageClass: local-path
-        postgresql-ha:
-          enabled: false
-        service:
-          http:
-            type: NodePort
-        ingress:
-          enabled: true
-          className: nginx
-          hosts:
-            - host: git.cjcocokrisp.lan
-              paths:
-                - path: /
-                  pathType: Prefix
-          annotations:
-            nginx.ingress.kubernetes.io/proxy-body-size: "1g"
+          giteaRootURL: http://git.cjcocokrisp.lan
+          existingSecret: gitea-actions-secret
+          existingSecretKey: token
+          global:
+            storageClass: local-path
+          statefulset:
+            nodeSelector:
+              machine: bastion
   syncPolicy:
     automated:
       prune: true
