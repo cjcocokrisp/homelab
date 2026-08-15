@@ -5,4 +5,4 @@ resources:
 images:
   - name: ghcr.io/cjcocokrisp/blog
     newTag: latest
-    digest: sha256:f9c933e9673f2d1b1141487741d7be1385b634d17d717697135935f02b65d452
+    digest: sha256:567f63dae735c8ec40d37001f3f469bea24dd489b1843d722c67ccdd2f172f5c
