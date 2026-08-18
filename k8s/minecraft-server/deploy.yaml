@@ -26,7 +26,7 @@ spec:
             memory: 4Gi
         envFrom:
         - configMapRef:
-            name: shawarmacraft-cm
+            name: ben-challenge-cm
         - secretRef:
             name: shawarmacraft-secret
         ports:
@@ -41,5 +41,5 @@ spec:
       - name: minecraft-data
         nfs:
           server: 192.168.0.4
-          path: /mnt/nfs/shawarmacraft
+          path: /mnt/nfs/ben-challenge
 

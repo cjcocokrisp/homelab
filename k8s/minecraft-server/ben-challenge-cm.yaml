@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ben-challenge-cm
+data:
+  EULA: "TRUE"
+  SERVER_NAME: "Ben $20 Steam Gift Card Challenge"
+  TYPE: "PAPER"
+  #VERSION: "1.21.11"
+  MAX_PLAYERS: "10"
+  MODE: "survival"
+  DIFFICULTY: "hard"
+  MOTD: "$20 STEAM GIFT CARD ON THE LINE!!! LOCK TF IN!!!"
+  ALLOW_FLIGHT: "TRUE"
+  #OVERRIDE_ICON: "TRUE"
+  SNOOPER_ENABLED: "FALSE"
+  ENABLE_WHITELIST: "TRUE"
+  WHITELIST: "KarmaReplicant,BenSoccer,Tilted_Terror,TheOne69420,GuyWithAHatGWAH,Dapper_Q"
+  LEVEL_TYPE: "minecraft:flat"
+  RCON_CMDS_STARTUP: |-
+    op KarmaReplicant
+    op BenSoccer
+    gamerule doInsomnia false
+    gamerule doFireTick false
+    gamerule playersSleepingPercentage 5
+    gamerule spawnRadius 25
