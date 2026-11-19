@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vcdle
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    name: vcdle
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-succeeded.vcdle_webhook: ""
+    notifications.argoproj.io/subscribe.on-sync-succeeded.discord_webhook: ""
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vcdle
+  source:
+    repoURL: https://github.com/cjcocokrisp/homelab
+    targetRevision: HEAD
+    path: k8s/vcdle
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

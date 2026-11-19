@@ -1,0 +1,6 @@
+resources:
+  - deploy.yaml
+images:
+  - name: ghcr.io/omartheone104/vcdle
+    newTag: latest
+    digest: sha256:1fe292d40fde9d9b6e483e79d5033871599e81c9b199c64897a2b121a1f5a793
