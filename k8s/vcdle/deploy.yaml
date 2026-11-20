@@ -12,7 +12,7 @@ spec:
         app: vcdle
     spec:
       containers:
-        - name: hot-potato
+        - name: vcdle
           image: ghcr.io/omartheone104/vcdle:latest
           env:
             - name: TOKEN
@@ -20,3 +20,12 @@ spec:
                 secretKeyRef:
                   name: vcdle-secret
                   key: token
+
+          volumeMounts:
+            - name: vcdle-data
+              mountPath: /app/data
+      volumes:
+        - name: vcdle-data
+          nfs:
+            server: 192.168.0.4
+            path: /mnt/nfs/vcdle
