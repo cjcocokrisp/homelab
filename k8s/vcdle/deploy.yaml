@@ -11,6 +11,8 @@ spec:
       labels:
         app: vcdle
     spec:
+      nodeSelector:
+        machine: bastion
       containers:
         - name: vcdle
           image: ghcr.io/omartheone104/vcdle:latest
