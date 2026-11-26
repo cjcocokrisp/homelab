@@ -3,4 +3,4 @@ resources:
 images:
   - name: ghcr.io/omartheone104/vcdle
     newTag: latest
-    digest: sha256:a3ad5da11e004add9a4289bad4523101400a9ed37dc9771f924024ba8d983e80
+    digest: sha256:2d6f628f0ea2edb243990145a62d6d1e9cb37051fa3257c3cfcc93bbf6f7479e
