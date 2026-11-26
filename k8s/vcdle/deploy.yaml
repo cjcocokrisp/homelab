@@ -3,6 +3,7 @@ apiVersion: apps/v1
 metadata:
   name: vcdle-deployment
 spec:
+  replicas: 0
   selector:
     matchLabels:
       app: vcdle
